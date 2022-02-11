@@ -1,5 +1,11 @@
 # ProductPop
 
+Prerequisites:  
+
+```sh
+run https://github.com/kasappeal/sparrest.js
+```
+
 To start the application use:
 
 ```sh
