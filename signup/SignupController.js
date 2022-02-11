@@ -1,4 +1,4 @@
-import { pubSub } from "./pubSub.js";
+import { pubSub } from "../shared/pubSub.js";
 import { signupService } from "./SignupService.js";
 
 export class SignupController {

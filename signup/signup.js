@@ -1,5 +1,5 @@
 import { SignupController } from "./SignupController.js";
-import { NotificationController } from "./NotificationController.js";
+import { NotificationController } from "../shared/notification/NotificationController.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const formElement = document.querySelector("form");

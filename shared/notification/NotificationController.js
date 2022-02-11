@@ -1,5 +1,5 @@
 import { buildNotificationView } from "./NotificationView.js";
-import { pubSub } from "./pubSub.js";
+import { pubSub } from "../pubSub.js";
 
 export class NotificationController {
   constructor(notificationElement) {
