@@ -1,6 +1,6 @@
 import { pubSub } from "../shared/pubSub.js";
 import { signupService } from "../signup/SignupService.js";
-import ProductService from "../product-list/ProductService.js";
+import { productService } from "../product-list/ProductService.js";
 import { buildproductDetailView } from "../product-list/ProductView.js";
 import { decodeToken } from "../utils/decodeToken.js";
 
@@ -21,7 +21,7 @@ export class ProductDetailController {
     }
 
     try {
-      this.product = await ProductService.getProduct(productId);
+      this.product = await productService.getProduct(productId);
       const productTemplate = buildproductDetailView(this.product);
       this.productDetailElement.innerHTML = productTemplate;
 
@@ -69,10 +69,10 @@ export class ProductDetailController {
 
     if (shouldDelete) {
       try {
-        await ProductService.deleteProduct(this.product.id);
+        await productService.deleteProduct(this.product.id);
         window.location.href = "/";
       } catch (error) {
-        // utilizamos pubsub
+        pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
       }
     }
   }

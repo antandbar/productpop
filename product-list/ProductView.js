@@ -11,7 +11,6 @@ export function buildProductView(product) {
 }
 
 export function buildproductDetailView(product) {
-  const currentTime = new Date(product.date).toLocaleString();
 
   let productTemplate = `
     <img src="${product.image}"></img>

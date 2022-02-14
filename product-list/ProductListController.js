@@ -1,5 +1,5 @@
 import { pubSub } from "../shared/pubSub.js";
-import ProductService from "./ProductService.js";
+import {productService} from "./ProductService.js";
 import {
   buildProductView,
   buildProductListSpinnerView,
@@ -20,7 +20,7 @@ export class ProductListController {
     this.productListElement.innerHTML = spinnerTemplate;
 
     try {
-      products = await ProductService.getProducts();
+      products = await productService.getProducts();
 
       if (products.length === 0) {
         this.productListElement.innerHTML = buildNotFoundProductsView();
@@ -47,42 +47,3 @@ export class ProductListController {
     }
   }
 }
-
-async function oldTweetListController(tweetListElement) {
-  let tweets;
-  const spinnerTemplate = buildProductListSpinnerView();
-
-  tweetListElement.innerHTML = spinnerTemplate;
-
-  try {
-    tweets = await TweetService.getTweets();
-
-    for (const tweet of tweets) {
-      const tweetArticleElement = document.createElement("article");
-      const tweetTemplate = buildTweetView(tweet);
-
-      tweetArticleElement.innerHTML = tweetTemplate;
-
-      tweetListElement.appendChild(tweetArticleElement);
-    }
-  } catch (error) {
-    alert("error obteniendo tweets");
-  } finally {
-    const loader = tweetListElement.querySelector(".loader");
-    loader.remove();
-    // loader.classList.add("hidden");
-  }
-}
-
-/* 
-
-misiones de un controlador:
-
-- orquestación o intermediario entre vista y modelo.
-- definir y manejar eventos
-- validar datos
-- gestinar errores
-- desacoplamiento entre capas(vista y modelo)
-- un controlador debe ocuparse de gestionar un nodo DOM
-  en cuanto a datos que debe pintar y eventos que suceden
-*/
