@@ -2,7 +2,7 @@ export function buildProductView(product) {
   const currentTime = new Date(product.date).toLocaleString();
   const productDetailView = buildproductDetailView(product);
   let productTemplate = `
-    <a href="/tweetDetail.html?id=${product.id}">
+    <a href="/productDetail.html?id=${product.id}">
       ${productDetailView}
     </a>
   `;

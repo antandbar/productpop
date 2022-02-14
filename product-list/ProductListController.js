@@ -9,9 +9,8 @@ import {
 export class ProductListController {
   productListElement = null;
 
-  constructor(productListElement, notificationController) {
+  constructor(productListElement) {
     this.productListElement = productListElement;
-    this.notificationController = notificationController;
   }
 
   async showProducts() {
