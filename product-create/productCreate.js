@@ -11,4 +11,5 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       const productCreateController = new ProductCreateController(createFormElement);
+      productCreateController.loginvalidate();
 });

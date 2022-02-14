@@ -1,10 +1,11 @@
 import { createProductService } from "./CreateProductService.js";
 import { pubSub } from "../shared/pubSub.js";
+import { signupService } from "../signup/SignupService.js";
+import { decodeToken } from "../utils/decodeToken.js";
 
 export class ProductCreateController {
   constructor(createFormElement) {
     this.createFormElement = createFormElement;
-
     this.attachEvents();
   }
 
@@ -54,11 +55,46 @@ export class ProductCreateController {
   }
 
   async addProduct(image, name, description, price, buySell) {
+
     try {
       await createProductService.createProduct(image, name, description, price, buySell);
       window.location.href = "/";
     } catch (error) {
       pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
     }
+  }
+
+  loginvalidate() {
+    const loggedUserToken = signupService.getLoggedUser();
+
+    if (!loggedUserToken) {
+
+      pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, "Debe hacer login para crear usuarios");
+      this.drawBackButton();
+    } else{
+      const inputElements = Array.from(
+        this.createFormElement.querySelectorAll("input")
+      );
+      // En caso de hacer login se habilitan los inputs
+      this.inputsEnabled (inputElements);
+    }     
+    
+  }
+  inputsEnabled (inputElements) {
+    inputElements.forEach((inputElement) => {
+      inputElement.removeAttribute("disabled");
+
+    });
+  }
+
+  drawBackButton() {
+    const buttonElement = document.createElement("button");
+    buttonElement.textContent = "volver";
+
+    this.createFormElement.appendChild(buttonElement);
+
+    this.createFormElement.addEventListener("click", () => {
+      window.location.href = "/index.html";
+    });
   }
 }
