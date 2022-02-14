@@ -1,10 +1,7 @@
 import { pubSub } from "../shared/pubSub.js";
-import {productService} from "./ProductService.js";
-import {
-  buildProductView,
-  buildProductListSpinnerView,
-  buildNotFoundProductsView,
-} from "./ProductView.js";
+import { productService } from "./ProductService.js";
+import { buildProductView, buildNotFoundProductsView } from "./ProductView.js";
+import { buildProductListSpinnerView } from "../shared/views.js"
 
 export class ProductListController {
   productListElement = null;

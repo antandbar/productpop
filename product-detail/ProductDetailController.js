@@ -3,6 +3,7 @@ import { signupService } from "../signup/SignupService.js";
 import { productService } from "../product-list/ProductService.js";
 import { buildproductDetailView } from "../product-list/ProductView.js";
 import { decodeToken } from "../utils/decodeToken.js";
+import { buildProductListSpinnerView } from "../shared/views.js"
 
 export class ProductDetailController {
   constructor(productDetailElement) {
@@ -20,6 +21,10 @@ export class ProductDetailController {
       return;
     }
 
+    const spinnerTemplate = buildProductListSpinnerView();
+
+    this.productDetailElement.innerHTML = spinnerTemplate;
+
     try {
       this.product = await productService.getProduct(productId);
       const productTemplate = buildproductDetailView(this.product);
@@ -28,7 +33,7 @@ export class ProductDetailController {
       this.handleDeleteButton();
     } catch (error) {
       pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
-    }
+    } 
   }
 
   handleDeleteButton() {

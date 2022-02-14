@@ -1,5 +1,4 @@
 export function buildProductView(product) {
-  const currentTime = new Date(product.date).toLocaleString();
   const productDetailView = buildproductDetailView(product);
   let productTemplate = `
     <a href="/productDetail.html?id=${product.id}">
@@ -21,18 +20,8 @@ export function buildproductDetailView(product) {
   `;
   return productTemplate;
 }
-
-export function buildProductListSpinnerView() {
-  return `<div class="loader">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>`;
-}
-
 export function buildNotFoundProductsView() {
   return `
-    <h1>Ooops!!! no hay ningún producto!!! =(</h1>
+      <h1>Ooops!!! no hay ningún producto!!! =(</h1>
   `;
-}
+  }
