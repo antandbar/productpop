@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación del producto</title>
+    <link rel="stylesheet" href="./shared/notification/notification.css" />
+  </head>
+  <body>
+    <section class="notification"></section>
+    <form>
+      <div>
+        <label for="image">Foto: </label>
+        <input type="text" name="image"/>
+      </div>
+      <div>
+        <label for="name">Nombre del product: </label>
+        <input type="text" name="name" required />
+      </div>
+      <div>
+        <label for="description">Descripción del producto: </label>
+        <input type="text" name="description" required />
+      </div>
+      <div>
+        <label for="price">Precio del producto: </label>
+        <input type="text" name="price" required />
+      </div>
+      <div>
+        <label for="buySell">Para comprar o vender?: </label>
+        <input type="text" name="buySell" required />
+      </div>
+
+      <!-- <button type="submit" disabled>Login</button> -->
+      <button type="submit" >Login</button>
+    </form>
+
+<!--     <a href="/signup.html">Si no tienes cuenta, Crea una</a> -->
+
+    <script type="module" src="./product-create/productCreate.js"></script> 
+  </body>
+</html>
