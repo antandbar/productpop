@@ -19,11 +19,11 @@ class CreateProductService {
         },
       });
     } catch (error) {
-      throw new Error("no he podido guardar el producto");
+      throw new Error("no he podido guardar el producto"); 
     }
 
     if (!response.ok) {
-        throw new Error(loginData.message);
+        throw new Error("error mientras se guardaba el producto"); 
     }
   }
 

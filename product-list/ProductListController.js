@@ -34,13 +34,13 @@ export class ProductListController {
     } catch (error) {
       // informar de error
       pubSub.publish(
-        pubSub.TOPICS.SHOW_ERROR_NOTIFICATION,
-        "error obteniendo productos"
-      );
+        pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
     
     } finally {
-      const loader = this.productListElement.querySelector(".loader");
-      loader.remove();
+      if (products.length !== 0) {
+        const loader = this.productListElement.querySelector(".loader");
+        loader.remove();
+      }
     }
   }
 }
