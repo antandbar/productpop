@@ -64,7 +64,7 @@ export class ProductDetailController {
 
     this.productDetailElement.appendChild(buttonElement);
 
-    this.productDetailElement.addEventListener("click", () => {
+    this.productDetailElement.querySelector("button").addEventListener("click", () => {
       this.deleteProduct();
     });
   }
