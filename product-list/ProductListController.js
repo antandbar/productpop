@@ -10,6 +10,8 @@ export class ProductListController {
 
   constructor(productListElement) {
     this.productListElement = productListElement;
+    // Se captura la tabla dado que el Spinner hacer un innerHTML
+    this.table = this.productListElement.querySelector("table");
   }
 
   async showProducts() {
@@ -27,15 +29,16 @@ export class ProductListController {
       if (products.length === 0) {
         this.productListElement.innerHTML = buildNotFoundProductsView();
       }
-
+      // Se añaden trs a la tabla
       for (const product of products) {
-        const productArticleElement = document.createElement("article");
+        let productTrElement = document.createElement("tr");  
         const productTemplate = buildProductView(product);
+        productTrElement.innerHTML = productTemplate;
 
-        productArticleElement.innerHTML = productTemplate;
+        this.table.appendChild(productTrElement);
+      } 
 
-        this.productListElement.appendChild(productArticleElement);
-      }
+      this.productListElement.appendChild(this.table);
     } catch (error) {
       // informar de error
       pubSub.publish(
@@ -68,7 +71,7 @@ export class ProductListController {
 
     this.productListElement.appendChild(buttonElement);
 
-    this.productListElement.addEventListener("click", () => {
+    this.productListElement.querySelector("button").addEventListener("click", () => {
       window.location.href = "/productCreate.html";
     });
   }

@@ -1,7 +1,6 @@
 import { createProductService } from "./CreateProductService.js";
 import { pubSub } from "../shared/pubSub.js";
 import { signupService } from "../signup/SignupService.js";
-import { decodeToken } from "../utils/decodeToken.js";
 
 export class ProductCreateController {
   constructor(createFormElement) {

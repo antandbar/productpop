@@ -1,0 +1,18 @@
+:root {
+    scroll-behavior: smooth;
+}
+
+*, *::after, *::before {
+    box-sizing: border-box;
+    color: black;
+    background-color: whitesmoke;
+     
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+img {
+    max-width: 100%;
+}
