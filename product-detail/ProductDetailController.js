@@ -61,6 +61,7 @@ export class ProductDetailController {
   drawDeleteButton() {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "Borrar Producto";
+    buttonElement.classList.add("delete-button");
 
     this.productDetailElement.appendChild(buttonElement);
 

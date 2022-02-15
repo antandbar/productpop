@@ -4,3 +4,6 @@ section {
 .description {
     font-weight: bold;
 }
+.delete-button {
+    margin-top: 2vh;
+}
