@@ -1,12 +1,8 @@
-:root {
-    scroll-behavior: smooth;
-}
 
 *, *::after, *::before {
     box-sizing: border-box;
     color: black;
-    background-color: whitesmoke;
-     
+    background-color: whitesmoke;     
 }
 
 body {

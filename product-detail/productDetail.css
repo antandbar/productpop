@@ -1,3 +1,9 @@
+body {
+    padding: 5%;
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+}
 section {
     padding: 10vh;
 }
@@ -6,4 +12,8 @@ section {
 }
 .delete-button {
     margin-top: 2vh;
+}
+.card-img-top {
+    width: 50vh; 
+    height: 20vh;
 }
