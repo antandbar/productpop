@@ -7,4 +7,6 @@ img {
     height: 7vh;
     align-items: left;
 }
-
+.not-active { 
+  display: none;  
+}

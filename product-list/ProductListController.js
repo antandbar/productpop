@@ -11,7 +11,11 @@ export class ProductListController {
   constructor(productListElement) {
     this.productListElement = productListElement;
     // Se captura la tabla dado que el Spinner hacer un innerHTML
-    this.table = this.productListElement.querySelector("table");
+    this.tableElement = this.productListElement.querySelector("table");
+    // Se captura la nav de paginación dado que el Spinner hacer un innerHTML
+    this.paginationElment = this.productListElement.querySelector("nav");
+    this.pageCounts = 1;
+    this.setEventsPagination();
   }
 
   async showProducts() {
@@ -20,25 +24,30 @@ export class ProductListController {
 
     this.productListElement.innerHTML = spinnerTemplate;
 
-    
     try {
-      products = await productService.getProducts();
+      
+      products = await productService.getProducts(this.pageCounts);
       // Se administra la creación del boton "Crear Producto" si el usuario está logado
       this.handleCreateButton();
 
-      if (products.length === 0) {
-        this.productListElement.innerHTML = buildNotFoundProductsView();
-      }
+      this.productListElement.appendChild(this.paginationElment);
+      this.paginationButtons();
+
+      const tbodyElement = this.tableElement.querySelector("tbody");
       // Se añaden trs a la tabla
       for (const product of products) {
         let productTrElement = document.createElement("tr");  
         const productTemplate = buildProductView(product);
         productTrElement.innerHTML = productTemplate;
 
-        this.table.appendChild(productTrElement);
+        tbodyElement.appendChild(productTrElement);
       } 
 
-      this.productListElement.appendChild(this.table);
+      this.productListElement.appendChild(this.tableElement);
+
+      if (products.length === 0) {
+        this.productListElement.innerHTML = buildNotFoundProductsView();
+      }
     } catch (error) {
       // informar de error
       pubSub.publish(
@@ -74,5 +83,56 @@ export class ProductListController {
     this.productListElement.querySelector("button").addEventListener("click", () => {
       window.location.href = "/productCreate.html";
     });
+  }
+
+  // Se setean los evento de la paginación
+  setEventsPagination(){
+    this.paginationElment.querySelector(".page-previus").addEventListener("click", () => {
+      this.pageCounts --;
+      this.reloadPage();
+    });
+
+    this.paginationElment.querySelector(".page-one").addEventListener("click", () => {
+      this.pageCounts = 1;
+      this.reloadPage();
+    });
+
+    this.paginationElment.querySelector(".page-two").addEventListener("click", () => {
+      this.pageCounts = 2;
+      this.reloadPage();
+    });
+
+    this.paginationElment.querySelector(".page-three").addEventListener("click", () => {
+      this.pageCounts = 3;
+      this.reloadPage();
+    });
+
+    this.paginationElment.querySelector(".page-Next").addEventListener("click", () => {
+      this.pageCounts ++;
+      this.reloadPage();
+    });
+  }
+
+  reloadPage() {
+    this.tableElement.querySelector("tbody").innerHTML = "";
+    this.showProducts();
+  }
+  // Se dehabilitan los botones fuera de rango del número de productos
+  paginationButtons(){
+    const productsTotalCount = productService.getTotalCount();
+    switch (true) {
+      case (productsTotalCount <= 10):
+        this.paginationElmentn.querySelector(".link-two").classList.add("not-active");
+        this.paginationElment.querySelector(".link-three").classList.add("not-active");
+        break;
+      case (productsTotalCount <= 20):          
+        this.paginationElment.querySelector(".link-three").classList.add("not-active");
+        break;
+    }
+
+    // Se evita que al pulsar "Atras" en varias ocasiones no funcione correctamente "Siguiente" 
+    if(this.pageCounts < 1) this.pageCounts = 1;
+    // Se evita que al pulsar "siguiente" en varias ocasiones no funcione correctamente "Atras" 
+    if(this.pageCounts >= Math.ceil(productsTotalCount/10)) this.pageCounts --;
   }
 }
