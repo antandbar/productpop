@@ -1,6 +1,6 @@
 import { pubSub } from "../shared/pubSub.js";
 import { productService } from "./ProductService.js";
-import { buildProductView, buildNotFoundProductsView } from "./ProductView.js";
+import { buildProductView, buildNotFoundProductsView, buildBodyTableView, buildBodyNavView } from "./ProductView.js";
 import { buildProductListSpinnerView } from "../shared/views.js"
 import { signupService } from "../signup/SignupService.js";
 import { decodeToken } from "../utils/decodeToken.js";
@@ -10,12 +10,7 @@ export class ProductListController {
 
   constructor(productListElement) {
     this.productListElement = productListElement;
-    // Se captura la tabla dado que el Spinner hacer un innerHTML
-    this.tableElement = this.productListElement.querySelector("table");
-    // Se captura la nav de paginación dado que el Spinner hacer un innerHTML
-    this.paginationElment = this.productListElement.querySelector("nav");
     this.pageCounts = 1;
-    this.setEventsPagination();
   }
 
   async showProducts() {
@@ -29,21 +24,10 @@ export class ProductListController {
       products = await productService.getProducts(this.pageCounts);
       // Se administra la creación del boton "Crear Producto" si el usuario está logado
       this.handleCreateButton();
+      this.drawNav(); 
+      this.drawTable();
+      this.drawTr(products);
 
-      this.productListElement.appendChild(this.paginationElment);
-      this.paginationButtons();
-
-      const tbodyElement = this.tableElement.querySelector("tbody");
-      // Se añaden trs a la tabla
-      for (const product of products) {
-        let productTrElement = document.createElement("tr");  
-        const productTemplate = buildProductView(product);
-        productTrElement.innerHTML = productTemplate;
-
-        tbodyElement.appendChild(productTrElement);
-      } 
-
-      this.productListElement.appendChild(this.tableElement);
 
       if (products.length === 0) {
         this.productListElement.innerHTML = buildNotFoundProductsView();
@@ -61,6 +45,33 @@ export class ProductListController {
     }
   }
 
+  drawTable() {
+    const productTableElement = document.createElement("table");
+    productTableElement.classList.add("table");
+    productTableElement.innerHTML = buildBodyTableView();
+    this.productListElement.appendChild(productTableElement);
+  }
+  drawTr(products) {
+    const tbodyElement = this.productListElement.querySelector("tbody");
+    // Se añaden trs a la tabla
+    for (const product of products) {
+      const productTrElement = document.createElement("tr");  
+      const productTemplate = buildProductView(product);
+      productTrElement.innerHTML = productTemplate;
+
+      tbodyElement.appendChild(productTrElement);
+    } 
+  }
+
+  drawNav() {
+    const productNavElement = document.createElement("nav");
+    productNavElement.classList.add("Page-nav");
+    productNavElement.innerHTML = buildBodyNavView();
+    this.productListElement.appendChild(productNavElement);
+    this.setEventsPagination();
+    this.paginationButtons(productNavElement);
+  }
+
   handleCreateButton() {
     const loggedUserToken = signupService.getLoggedUser();
 
@@ -76,9 +87,17 @@ export class ProductListController {
 
   drawCreateButton() {
     const buttonElement = document.createElement("button");
-    buttonElement.textContent = "Crear Producto";
+    buttonElement.textContent = "Crear Producto"; 
+    buttonElement.classList.add("btn");
+    buttonElement.classList.add("btn-outline-success"); 
+    buttonElement.classList.add("btn-create");
 
-    this.productListElement.appendChild(buttonElement);
+    const div = document.createElement("div");
+    div.classList.add("div-btn");
+
+    div.appendChild(buttonElement);
+
+    this.productListElement.appendChild(div);
 
     this.productListElement.querySelector("button").addEventListener("click", () => {
       window.location.href = "/productCreate.html";
@@ -87,46 +106,41 @@ export class ProductListController {
 
   // Se setean los evento de la paginación
   setEventsPagination(){
-    this.paginationElment.querySelector(".page-previus").addEventListener("click", () => {
+    this.productListElement.querySelector(".page-previus").addEventListener("click", () => {
       this.pageCounts --;
-      this.reloadPage();
+      this.showProducts();
     });
 
-    this.paginationElment.querySelector(".page-one").addEventListener("click", () => {
+    this.productListElement.querySelector(".page-one").addEventListener("click", () => {
       this.pageCounts = 1;
-      this.reloadPage();
+      this.showProducts();
     });
 
-    this.paginationElment.querySelector(".page-two").addEventListener("click", () => {
+    this.productListElement.querySelector(".page-two").addEventListener("click", () => {
       this.pageCounts = 2;
-      this.reloadPage();
+      this.showProducts();
     });
 
-    this.paginationElment.querySelector(".page-three").addEventListener("click", () => {
+    this.productListElement.querySelector(".page-three").addEventListener("click", () => {
       this.pageCounts = 3;
-      this.reloadPage();
+      this.showProducts();
     });
 
-    this.paginationElment.querySelector(".page-Next").addEventListener("click", () => {
+    this.productListElement.querySelector(".page-Next").addEventListener("click", () => {
       this.pageCounts ++;
-      this.reloadPage();
+      this.showProducts();
     });
   }
-
-  reloadPage() {
-    this.tableElement.querySelector("tbody").innerHTML = "";
-    this.showProducts();
-  }
-  // Se dehabilitan los botones fuera de rango del número de productos
-  paginationButtons(){
+  // Se gestionan los botones de la paginación
+  paginationButtons(productNavElement){
     const productsTotalCount = productService.getTotalCount();
     switch (true) {
       case (productsTotalCount <= 10):
-        this.paginationElmentn.querySelector(".link-two").classList.add("not-active");
-        this.paginationElment.querySelector(".link-three").classList.add("not-active");
+        productNavElement.querySelector(".link-two").classList.add("not-active");
+        productNavElement.querySelector(".link-three").classList.add("not-active");
         break;
       case (productsTotalCount <= 20):          
-        this.paginationElment.querySelector(".link-three").classList.add("not-active");
+        productNavElement.querySelector(".link-three").classList.add("not-active");
         break;
     }
 
