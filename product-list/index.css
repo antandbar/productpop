@@ -33,5 +33,11 @@ img {
   justify-content: right;
 }
 
+.noProduct {
+  margin-top: 10vh;
+  height: 20vh;
+  text-align: center;
+}
+
 
 

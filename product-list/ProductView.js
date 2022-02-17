@@ -29,7 +29,7 @@ export function buildBodyTableView() {
     </thead>
     <tbody>
     </tbody>
-  `
+  `;
   return bodyTableTemplate;
 }
 
@@ -43,13 +43,13 @@ export function buildBodyNavView() {
       <li class="page-item page-three"><a class="page-link link-three" href="#">3</a></li>
       <li class="page-item page-Next"><a class="page-link link-next" href="#">Siguiente</a></li>
     </ul>
-  `
+  `;
   return bodyNavTemplate;
 }
 
 export function buildproductDetailView(product) {
-
-  let productTemplate = `
+  let productTemplate = 
+  `
     <h1>Detalle del producto</h1>
     <div class="card" style="width: 18rem;">
     <img class="card-img-top" src="${product.image}" alt="Card image cap">
@@ -65,6 +65,6 @@ export function buildproductDetailView(product) {
 }
 export function buildNotFoundProductsView() {
   return `
-      <h1>Ooops!!! no hay ningún producto!!! =(</h1>
+      <h1 class ="noProduct" >No hay productos guardados !!!</h1>
   `;
   }

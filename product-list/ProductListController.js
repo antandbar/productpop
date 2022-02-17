@@ -30,7 +30,11 @@ export class ProductListController {
 
 
       if (products.length === 0) {
-        this.productListElement.innerHTML = buildNotFoundProductsView();
+        this.productListElement.innerHTML = "";
+        this.handleCreateButton();
+        const divNotFoundProudct = document.createElement("div");
+        divNotFoundProudct.innerHTML = buildNotFoundProductsView();
+        this.productListElement.appendChild(divNotFoundProudct);
       }
     } catch (error) {
       // informar de error
