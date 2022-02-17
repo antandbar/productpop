@@ -1,18 +1,13 @@
-
-section {
-    margin-right: 5vh;
-    margin-left: 5vh;
-  }
-img {
-    width: 7vh;
-    height: 7vh;
-    align-items: left;
+.header {
+  margin-left: 5vh;
+  border-bottom:solid 4px green;
+  width:30%;
+  height:50px;
 }
-.not-active { 
-  display: none;  
+.title {
+  color: black; 
 }
 .header-links {
-  text-decoration: none;
   font-size: 2vh;
   padding: 0.5vh;
   margin-top: 1vh;
@@ -20,21 +15,22 @@ img {
 .login-link {
   margin-left: 1vh;
 }
-
+section {
+  margin-right: 5vh;
+  margin-left: 5vh;
+}
+img {
+  width: 7vh;
+  height: 7vh;
+  align-items: left;
+}
+.not-active { 
+  display: none;  
+}
 .div-btn {
   display: flex;
   flex-direction: row;
   justify-content: right;
-}
-.header {
-  margin-left: 5vh;
-  border-bottom:solid 4px green;
-  width:30%;
-  height:50px;
-}
-
-.title {
-  color: black; 
 }
 
 

@@ -62,6 +62,9 @@ export class ProductDetailController {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "Borrar Producto";
     buttonElement.classList.add("delete-button");
+    buttonElement.classList.add("btn");
+    buttonElement.classList.add("btn-outline-success"); 
+    buttonElement.classList.add("btn-create");
 
     this.productDetailElement.appendChild(buttonElement);
 

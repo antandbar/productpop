@@ -54,9 +54,14 @@ export class ProductCreateController {
   }
 
   async addProduct(image, name, description, price, buySell) {
-
     try {
-      await createProductService.createProduct(image, name, description, price, buySell);
+      await createProductService.createProduct(
+        image,
+        name,
+        description,
+        price,
+        buySell
+      );
       window.location.href = "/";
     } catch (error) {
       pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
@@ -67,33 +72,42 @@ export class ProductCreateController {
     const loggedUserToken = signupService.getLoggedUser();
 
     if (!loggedUserToken) {
-
-      pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, "Debe hacer login para crear usuarios");
+      pubSub.publish(
+        pubSub.TOPICS.SHOW_ERROR_NOTIFICATION,
+        "Debe hacer login para crear usuarios"
+      );
+      this.disabledBtnForm();
       this.drawBackButton();
-    } else{
+    } else {
       const inputElements = Array.from(
         this.createFormElement.querySelectorAll("input")
       );
       // En caso de hacer login se habilitan los inputs
-      this.inputsEnabled (inputElements);
-    }     
-    
+      this.inputsEnabled(inputElements);
+    }
   }
-  inputsEnabled (inputElements) {
+  inputsEnabled(inputElements) {
     inputElements.forEach((inputElement) => {
       inputElement.removeAttribute("disabled");
-
     });
   }
 
   drawBackButton() {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "volver";
+    buttonElement.classList.add("btn");
+    buttonElement.classList.add("btn-danger");
 
     this.createFormElement.appendChild(buttonElement);
 
-    this.createFormElement.addEventListener("click", () => {
-      window.location.href = "/index.html";
-    });
+    this.createFormElement
+      .querySelector(".btn-danger")
+      .addEventListener("click", () => {
+        window.location.href = "/index.html";
+      });
+  }
+  disabledBtnForm() {
+    const formBtnElement = this.createFormElement.querySelector(".btnForm");
+    formBtnElement.classList.add("not-active");
   }
 }

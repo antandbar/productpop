@@ -1,22 +1,45 @@
 body {
-    padding: 15%;
     display: flex;
     flex-direction:column;
     align-items:center;
+    background-color: whitesmoke;
+    
+}
+h1 {
+    width: 80vh;
+    height: 1vh;
+    text-align: center;
+    margin-top: 20vh;
+    margin-bottom: 0vh;
+    background-color: rgba(17,166,58,0.1);
+    color: rgba(0, 0,0, 0.7);
+} 
+main {
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    background-color: rgba(17,166,58,0.1);
+    width: 80vh;
 }
 form {
-    margin-top: 1vh;
+    margin-top: 10vh;
+    width: 56vh;
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    
 }
 .form-control {
     width: 50vh;
     margin-top: 1vh;
     margin-left: 3vh;
     margin-right: 3vh;
+    
 }
 
 .btn {
     margin-top: 3vh;
-    width: 100%;
+    width: 56vh;
 }
 label, small {
     margin-left: 3vh;
@@ -26,3 +49,4 @@ a {
     margin-left: 3vh;
     margin-right: 3vh; 
 }
+

@@ -10,39 +10,44 @@
      <link rel="stylesheet" href="./shared/reset.css">
      <link rel="stylesheet" href="./shared/global.css">
      <link rel="stylesheet" href="./product-create/product-create.css">
-     <link rel="stylesheet" href="./shared/notification/notification.css" />
+     <link rel="stylesheet" href="./shared/notification/notification.css"/>
+     <link rel="icon" href="./shared/img/favicon-wallapop.jpeg">
   </head>
   <body>
-    <section class="notification"></section>
-    <form>
-      <div class="form-group">
-        <label for="image">Foto:</label>
-        <input type="text" class="form-control" name="image" disabled>
-      </div>
-      <div class="form-group">
-        <label for="name">Nombre:</label>
-        <input type="text" class="form-control" name="name" required disabled>
-      </div>
-      <div class="form-group">
-        <label for="description">Descripción:</label>
-        <input type="text" class="form-control" name="description" required disabled>
-      </div>
-      <div class="form-group">
-        <label for="price">Precio:</label>
-        <input type="text" class="form-control" name="price" required disabled>
-      </div>
-      <div class="form-group">
-        <label for="buySell">Comprar o vender?</label>
-        <input type="text" class="form-control" name="buySell" required disabled>
-      </div>
-   
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary" disabled>Crear</button>
-      </div>
-    </form>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <header>
+      <h1>Crear Producto</h1>
+    </header>
+    <main>
+      <section class="notification"></section>
+      <form>
+        <div class="form-group">
+          <label for="image">Foto:</label>
+          <input type="text" class="form-control" name="image" disabled>
+        </div>
+        <div class="form-group">
+          <label for="name">Nombre:</label>
+          <input type="text" class="form-control" name="name" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción:</label>
+          <input type="text" class="form-control" name="description" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="price">Precio:</label>
+          <input type="text" class="form-control" name="price" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="buySell">Compra o venta?</label>
+          <input type="text" class="form-control" name="buySell" required disabled>
+        </div>
+    
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-success btnForm" disabled>Crear</button>
+        </div>  
+      </form>
+    </main>
+    <footer></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="module" src="./product-create/productCreate.js"></script> 
   </body>
 </html>

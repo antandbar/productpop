@@ -10,33 +10,39 @@
     <link rel="stylesheet" href="./shared/reset.css">
     <link rel="stylesheet" href="./shared/global.css">
     <link rel="stylesheet" href="./signup/signup.css">
-    <link rel="stylesheet" href="./shared/notification/notification.css" />
+    <link rel="stylesheet" href="./shared/notification/notification.css"/>
+    <link rel="icon" href="./shared/img/favicon-wallapop.jpeg">
   </head>
   <body>
+    <header>
+      <h1>Registro</h1>
+    </header>
     <main>
       <div class="notification"></div>
-      <form>
-        <div class="form-group">
-          <label for="textInput">usuario</label>
-          <input type="text" class="form-control" name="textInput" required>
-          <small id="emailHelp" class="form-text text-muted">Nunca compartas tu nombre de usuario</small>
-        </div>
-        <div class="form-group">
-          <label for="passwordInput">Password</label>
-          <input type="password" class="form-control" name="passwordInput" required>
-        </div>
-        <div class="form-group">
-          <label for="passwordMatchInput">Repita Password</label>
-          <input type="password" class="form-control" name="passwordMatchInput" required>
-        </div>
-  
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary" disabled>Login</button>
-        </div>
-      </form>
-
+     
+        <form>
+          <div class="form-group">
+            <label for="textInput">usuario</label>
+            <input type="text" class="form-control" name="textInput" required>
+            <small id="emailHelp" class="form-text text-muted">Nunca compartas tu nombre de usuario</small>
+          </div>
+          <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input type="password" class="form-control" name="passwordInput" required>
+          </div>
+          <div class="form-group">
+            <label for="passwordMatchInput">Repita Password</label>
+            <input type="password" class="form-control" name="passwordMatchInput" required>
+          </div>
+    
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" disabled>Login</button>
+          </div>
+        </form>
     </main>
 
+    <footer></footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="module" src="./signup/signup.js"></script>
   </body>

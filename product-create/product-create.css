@@ -1,24 +1,47 @@
 body {
-    padding: 5%;
     display: flex;
     flex-direction:column;
     align-items:center;
+    background-color: whitesmoke;
+}
+h1 {
+    width: 80vh;
+    text-align: center;
+    margin-top: 10vh;
+    margin-bottom: 0vh;
+    background-color: rgba(17,166,58,0.1); 
+    color: rgba(0, 0,0, 0.7);
+}
+main {
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    background-color: rgba(17,166,58,0.1);
+    width: 80vh;
 }
 form {
-    margin-top: 1vh;
+    margin-top: 3vh;
+    width: 56vh;
+    display: flex;
+    flex-direction:column;
+    align-items:center; 
 }
 .form-control {
     width: 50vh;
     margin-top: 1vh;
     margin-left: 3vh;
     margin-right: 3vh;
+    background-color: rgba(0,0,0,0.1);
 }
 
 .btn {
     margin-top: 3vh;
-    width: 100%;
+    width: 50vh;
 }
 label{
     margin-left: 3vh;
     margin-right: 3vh;
 }
+.not-active { 
+    display: none;  
+  }

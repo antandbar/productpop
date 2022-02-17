@@ -50,6 +50,7 @@ export function buildBodyNavView() {
 export function buildproductDetailView(product) {
 
   let productTemplate = `
+    <h1>Detalle del producto</h1>
     <div class="card" style="width: 18rem;">
     <img class="card-img-top" src="${product.image}" alt="Card image cap">
     <div class="card-body">
