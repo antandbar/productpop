@@ -2,6 +2,7 @@ class SignupService {
   constructor() {
   }
 
+  // Crea un nuevo usuario
   async createUser(username, password) {
     const body = {
       username,
@@ -18,58 +19,20 @@ class SignupService {
           "Content-Type": "application/json",
         },
       });
-  }catch(error) {
-    throw new Error("no he podido hacer el registro");
-  }
-
-  try{
-    registerData = await registerResponse.json();
-  } catch(error) {
-    throw new Error("no he podido transformar la respuesta a json");
-  }
-
-    if (!registerResponse.ok) {
-      throw new Error(registerData.message);
+    }catch(error) {
+      throw new Error("no he podido hacer el registro");
     }
-  }
 
-  async loginUser(username, password) {
-    const body = {
-      username,
-      password,
-    };
-    let loginResponse;
-    let loginData;
-
-    try {
-      loginResponse = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch(error) {
-      throw new Error("no he podido hacer el login");
-    } 
-
-    try {
-    loginData = await loginResponse.json();
+    try{
+      registerData = await registerResponse.json();
     } catch(error) {
       throw new Error("no he podido transformar la respuesta a json");
     }
 
-    if (!loginResponse.ok) {
-      throw new Error(loginData.message);
+     // Se evalua si la respuesta fue exitosa
+    if (!registerResponse.ok) {
+      throw new Error(registerData.message);
     }
-
-    const token = loginData.accessToken;
-
-    localStorage.setItem("jwt", token);
-  }
-
-  getLoggedUser() {
-    return localStorage.getItem("jwt") || null;
   }
 }
 

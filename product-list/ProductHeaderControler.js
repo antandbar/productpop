@@ -6,7 +6,8 @@ export class ProductHeaderController {
     showtitle() {
         this.drawTitle();
     }
-
+    
+    // Se pinta el Title
     drawTitle() {
         const productTitleElement = document.createElement("h1");
         productTitleElement.classList.add("title");

@@ -1,9 +1,9 @@
 import { pubSub } from "../shared/pubSub.js";
-import { signupService } from "../signup/SignupService.js";
-import { productService } from "../product-list/ProductService.js";
-import { buildproductDetailView } from "../product-list/ProductView.js";
+import { loginService } from "../login/LoginService.js";
+import { productDetailService } from "./ProductDetailService.js";
+import { buildproductDetailView } from "./ProductDetailView.js";
 import { decodeToken } from "../utils/decodeToken.js";
-import { buildProductListSpinnerView } from "../shared/views.js"
+import { buildProductListSpinnerView } from "../shared/spinner/spinnerView.js"
 
 export class ProductDetailController {
   constructor(productDetailElement) {
@@ -11,6 +11,7 @@ export class ProductDetailController {
     this.product = null;
   }
 
+  // En caso no exista ID se lanza excepción
   async showProduct(productId) {
     if (!productId) {
       pubSub.publish(
@@ -21,12 +22,13 @@ export class ProductDetailController {
       return;
     }
 
+    // Se lanza spinner mientras se carga la web
     const spinnerTemplate = buildProductListSpinnerView();
-
     this.productDetailElement.innerHTML = spinnerTemplate;
 
     try {
-      this.product = await productService.getProduct(productId);
+      // Se llama al servicio de productos según "id"
+      this.product = await productDetailService.getProduct(productId);
       const productTemplate = buildproductDetailView(this.product);
       this.productDetailElement.innerHTML = productTemplate;
 
@@ -37,17 +39,16 @@ export class ProductDetailController {
   }
 
   handleDeleteButton() {
-    const loggedUserToken = signupService.getLoggedUser();
+    const loggedUserToken = loginService.getLoggedUser();
 
     if (loggedUserToken) {
-      // decodificamos token
+      // Se decodifica el token
       const userInfo = decodeToken(loggedUserToken);
 
-      // comprobamos si el id de usuario logado es el mismo que el id del creador del producto
+      // Se comprueba si el id de usuario logado es el mismo que el id del creador del producto
       const isOwner = this.isProductOwner(userInfo.userId);
      
-
-      // pintamos botón
+      // Se pinta el botón
       if (isOwner) {
         this.drawDeleteButton();
       }
@@ -58,6 +59,7 @@ export class ProductDetailController {
     return userId === this.product.userId;
   }
 
+  // Se pinta el botón delete
   drawDeleteButton() {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "Borrar Producto";
@@ -73,12 +75,13 @@ export class ProductDetailController {
     });
   }
 
+  // Se elemina el producto
   async deleteProduct() {
     const shouldDelete = window.confirm("Estás seguro de borrar el producto?");
 
     if (shouldDelete) {
       try {
-        await productService.deleteProduct(this.product.id);
+        await productDetailService.deleteProduct(this.product.id);
         window.location.href = "/";
       } catch (error) {
         pubSub.publish(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);

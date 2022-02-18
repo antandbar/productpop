@@ -8,6 +8,7 @@ export class NotificationController {
     this.subscribeToEvents();
   }
 
+  // Se suscribe a eventos
   subscribeToEvents() {
     pubSub.subscribe(pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, (message) => {
       this.show(message);
@@ -16,9 +17,7 @@ export class NotificationController {
 
   show(message) {
     const noticationTemplate = buildNotificationView(message);
-
     this.notificationElement.innerHTML = noticationTemplate;
-
     const closeButtonelement = this.notificationElement.querySelector("button");
 
     closeButtonelement.addEventListener("click", (event) => {

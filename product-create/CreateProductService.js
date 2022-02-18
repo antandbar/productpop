@@ -1,4 +1,4 @@
-import { signupService } from "../signup/SignupService.js";
+import { loginService } from "../login/LoginService.js";
 
 class CreateProductService {
   constructor() {
@@ -14,7 +14,7 @@ class CreateProductService {
         method: "POST",
         body: JSON.stringify(product),
         headers: {
-          Authorization: "Bearer " + signupService.getLoggedUser(),
+          Authorization: "Bearer " + loginService.getLoggedUser(),
           "Content-Type": "application/json",
         },
       });
@@ -22,11 +22,13 @@ class CreateProductService {
       throw new Error("no he podido guardar el producto"); 
     }
 
+     // Se evalua si la respuesta fue exitosa
     if (!response.ok) {
         throw new Error("error mientras se guardaba el producto"); 
     }
   }
 
+  // Se devuelve un objeto producto
   getProductObj(image, name, description, price, buySell) {
     const productObj = {
       image,

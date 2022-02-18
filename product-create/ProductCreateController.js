@@ -1,10 +1,11 @@
 import { createProductService } from "./CreateProductService.js";
 import { pubSub } from "../shared/pubSub.js";
-import { signupService } from "../signup/SignupService.js";
+import { loginService } from "../login/LoginService.js";
 
 export class ProductCreateController {
   constructor(createFormElement) {
     this.createFormElement = createFormElement;
+    // Se cargan los eventos a instaciar la clase
     this.attachEvents();
   }
 
@@ -14,16 +15,19 @@ export class ProductCreateController {
   }
 
   onAnyInputChange() {
+    // Se guardan los input "required" en un nuevo objeto Array para aprovechar los metodos Array
     const inputElements = Array.from(
       this.createFormElement.querySelectorAll("input:required")
     );
 
+    // Se recorren los inputs para evaluar si tienen contenido
     inputElements.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         const areInputsFilled = inputElements.every(
           (inputElement) => inputElement.value
         );
-
+        
+        // Se habilita o deshabilita botón según campos rellenos
         if (areInputsFilled) {
           this.createFormElement
             .querySelector("button")
@@ -37,6 +41,7 @@ export class ProductCreateController {
     });
   }
 
+  // Se captura data del formulario
   onSubmitCreateForm() {
     this.createFormElement.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -54,6 +59,7 @@ export class ProductCreateController {
   }
 
   async addProduct(image, name, description, price, buySell) {
+    // Se llama al servicio de crear producto
     try {
       await createProductService.createProduct(
         image,
@@ -68,8 +74,9 @@ export class ProductCreateController {
     }
   }
 
+      // Se evalua si existe el token (se ha realizado login)
   loginvalidate() {
-    const loggedUserToken = signupService.getLoggedUser();
+    const loggedUserToken = loginService.getLoggedUser();
 
     if (!loggedUserToken) {
       pubSub.publish(
@@ -86,12 +93,14 @@ export class ProductCreateController {
       this.inputsEnabled(inputElements);
     }
   }
+
   inputsEnabled(inputElements) {
     inputElements.forEach((inputElement) => {
       inputElement.removeAttribute("disabled");
     });
   }
 
+  // Se pinta el boton volver en caso de no ser usuario logado
   drawBackButton() {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "volver";
@@ -106,6 +115,8 @@ export class ProductCreateController {
         window.location.href = "/index.html";
       });
   }
+
+  // Se deshabilita el boton volver en caso de no ser usuario logado 
   disabledBtnForm() {
     const formBtnElement = this.createFormElement.querySelector(".btnForm");
     formBtnElement.classList.add("not-active");

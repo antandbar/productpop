@@ -1,8 +1,8 @@
 import { pubSub } from "../shared/pubSub.js";
 import { productService } from "./ProductService.js";
 import { buildProductView, buildNotFoundProductsView, buildBodyTableView, buildBodyNavView } from "./ProductView.js";
-import { buildProductListSpinnerView } from "../shared/views.js"
-import { signupService } from "../signup/SignupService.js";
+import { buildProductListSpinnerView } from "../shared/spinner/spinnerView.js"
+import { loginService } from "../login/LoginService.js"
 import { decodeToken } from "../utils/decodeToken.js";
 
 export class ProductListController {
@@ -15,20 +15,21 @@ export class ProductListController {
 
   async showProducts() {
     let products;
+    
+    // Se pinta spinner mientras se carga la web
     const spinnerTemplate = buildProductListSpinnerView();
-
     this.productListElement.innerHTML = spinnerTemplate;
 
     try {
-      
+      // Se llama a servicio para traer todos los productos paginándolos
       products = await productService.getProducts(this.pageCounts);
-      // Se administra la creación del boton "Crear Producto" si el usuario está logado
+
       this.handleCreateButton();
       this.drawNav(); 
       this.drawTable();
       this.drawTr(products);
 
-
+      // En caso de tener productos 
       if (products.length === 0) {
         this.productListElement.innerHTML = "";
         this.handleCreateButton();
@@ -37,11 +38,12 @@ export class ProductListController {
         this.productListElement.appendChild(divNotFoundProudct);
       }
     } catch (error) {
-      // informar de error
+      // Se informa el error
       pubSub.publish(
         pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
     
     } finally {
+      // Se elimina spinner al cargar la web
       if (products.length !== 0) {
         const loader = this.productListElement.querySelector(".loader");
         loader.remove();
@@ -77,7 +79,7 @@ export class ProductListController {
   }
 
   handleCreateButton() {
-    const loggedUserToken = signupService.getLoggedUser();
+    const loggedUserToken = loginService.getLoggedUser();
 
     if (loggedUserToken) {
       // decodificamos token
@@ -89,6 +91,7 @@ export class ProductListController {
     }
   }
 
+  // Se pinta el boton que crea productos
   drawCreateButton() {
     const buttonElement = document.createElement("button");
     buttonElement.textContent = "Crear Producto"; 
@@ -96,19 +99,20 @@ export class ProductListController {
     buttonElement.classList.add("btn-outline-success"); 
     buttonElement.classList.add("btn-create");
 
+    // Se crea div para posicionar el bottón en la web
     const div = document.createElement("div");
     div.classList.add("div-btn");
-
     div.appendChild(buttonElement);
-
     this.productListElement.appendChild(div);
 
+    // Al pusar el botón se redirige a la página de crear botón
     this.productListElement.querySelector("button").addEventListener("click", () => {
       window.location.href = "/productCreate.html";
     });
   }
 
   // Se setean los evento de la paginación
+  // Cuando hay más de tres páginas se avanza y retrocede con "atras"/"siguiente" 
   setEventsPagination(){
     this.productListElement.querySelector(".page-previus").addEventListener("click", () => {
       this.pageCounts --;
