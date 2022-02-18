@@ -81,7 +81,7 @@ export class ProductCreateController {
     if (!loggedUserToken) {
       pubSub.publish(
         pubSub.TOPICS.SHOW_ERROR_NOTIFICATION,
-        "Debe hacer login para crear usuarios"
+        "Debe hacer login para crear productos"
       );
       this.disabledBtnForm();
       this.drawBackButton();
