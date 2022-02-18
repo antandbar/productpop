@@ -6,15 +6,15 @@ import { loginService } from "../login/LoginService.js"
 import { decodeToken } from "../utils/decodeToken.js";
 
 export class ProductListController {
-  productListElement = null;
 
   constructor(productListElement) {
     this.productListElement = productListElement;
     this.pageCounts = 1;
+    this.products;
+    this.productsTotalCount;
   }
 
   async showProducts() {
-    let products;
     
     // Se pinta spinner mientras se carga la web
     const spinnerTemplate = buildProductListSpinnerView();
@@ -22,15 +22,15 @@ export class ProductListController {
 
     try {
       // Se llama a servicio para traer todos los productos paginándolos
-      products = await productService.getProducts(this.pageCounts);
+      this.products = await productService.getProducts(this.pageCounts);
 
       this.handleCreateButton();
       this.drawNav(); 
       this.drawTable();
-      this.drawTr(products);
+      this.drawTr();
 
       // En caso de tener productos 
-      if (products.length === 0) {
+      if (this.products.length === 0) {
         this.productListElement.innerHTML = "";
         this.handleCreateButton();
         const divNotFoundProudct = document.createElement("div");
@@ -38,29 +38,36 @@ export class ProductListController {
         this.productListElement.appendChild(divNotFoundProudct);
       }
     } catch (error) {
+      // Se elimina Spinner
+      this.removeSpinner();
       // Se informa el error
       pubSub.publish(
         pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
     
     } finally {
       // Se elimina spinner al cargar la web
-      if (products.length !== 0) {
-        const loader = this.productListElement.querySelector(".loader");
-        loader.remove();
+      if (this.products.length !== 0) {
+        // Se elimina Spinner
+        this.removeSpinner();
       }
     }
   }
 
+  // Se elimina Spinner al cargar la página
+  removeSpinner() {
+    const loader = this.productListElement.querySelector(".loader");
+    loader.remove();
+  }
   drawTable() {
     const productTableElement = document.createElement("table");
     productTableElement.classList.add("table");
     productTableElement.innerHTML = buildBodyTableView();
     this.productListElement.appendChild(productTableElement);
   }
-  drawTr(products) {
+  drawTr() {
     const tbodyElement = this.productListElement.querySelector("tbody");
     // Se añaden trs a la tabla
-    for (const product of products) {
+    for (const product of this.products) {
       const productTrElement = document.createElement("tr");  
       const productTemplate = buildProductView(product);
       productTrElement.innerHTML = productTemplate;
@@ -75,7 +82,7 @@ export class ProductListController {
     productNavElement.innerHTML = buildBodyNavView();
     this.productListElement.appendChild(productNavElement);
     this.setEventsPagination();
-    this.paginationButtons(productNavElement);
+    this.paginationButtons();
   }
 
   handleCreateButton() {
@@ -116,45 +123,61 @@ export class ProductListController {
   setEventsPagination(){
     this.productListElement.querySelector(".page-previus").addEventListener("click", () => {
       this.pageCounts --;
-      this.showProducts();
+      // Se evita que al pulsar "Atras" en varias ocasiones no funcione correctamente "Siguiente" 
+      if(this.pageCounts < 1) this.pageCounts = 1;
+      this.getProductsNav();
     });
 
     this.productListElement.querySelector(".page-one").addEventListener("click", () => {
       this.pageCounts = 1;
-      this.showProducts();
+      this.getProductsNav();
     });
 
     this.productListElement.querySelector(".page-two").addEventListener("click", () => {
       this.pageCounts = 2;
-      this.showProducts();
+      this.getProductsNav();
     });
 
     this.productListElement.querySelector(".page-three").addEventListener("click", () => {
       this.pageCounts = 3;
-      this.showProducts();
+      this.getProductsNav();
     });
 
     this.productListElement.querySelector(".page-Next").addEventListener("click", () => {
       this.pageCounts ++;
-      this.showProducts();
+      // Se evita que al pulsar "siguiente" en varias ocasiones no funcione correctamente "Atras" 
+      if(this.pageCounts > Math.ceil(this.productsTotalCount/10)) this.pageCounts --;
+      this.getProductsNav();
     });
   }
   // Se gestionan los botones de la paginación
-  paginationButtons(productNavElement){
-    const productsTotalCount = productService.getTotalCount();
+  paginationButtons(){
+    this.productsTotalCount = productService.getTotalCount();
     switch (true) {
-      case (productsTotalCount <= 10):
-        productNavElement.querySelector(".link-two").classList.add("not-active");
-        productNavElement.querySelector(".link-three").classList.add("not-active");
+      case (this.productsTotalCount <= 10):
+        this.productListElement.querySelector(".link-two").classList.add("not-active");
+        this.productListElement.querySelector(".link-three").classList.add("not-active");
         break;
-      case (productsTotalCount <= 20):          
-        productNavElement.querySelector(".link-three").classList.add("not-active");
+      case (this.productsTotalCount <= 20):          
+        this.productListElement.querySelector(".link-three").classList.add("not-active");
         break;
     }
+  }
 
-    // Se evita que al pulsar "Atras" en varias ocasiones no funcione correctamente "Siguiente" 
-    if(this.pageCounts < 1) this.pageCounts = 1;
-    // Se evita que al pulsar "siguiente" en varias ocasiones no funcione correctamente "Atras" 
-    if(this.pageCounts >= Math.ceil(productsTotalCount/10)) this.pageCounts --;
+  // Devuelve productos que son utilizados por la paginación
+  async getProductsNav() { 
+    try {
+      this.products = await productService.getProducts(this.pageCounts);
+      // Se llama a servicio para traer todos los productos paginándolos
+      const tbodyElement = this.productListElement.querySelector("tbody");
+      tbodyElement.innerHTML="";
+      
+      this.drawTr();
+      this.paginationButtons();
+    } catch (error) {
+      // Se informa el error
+      pubSub.publish(
+        pubSub.TOPICS.SHOW_ERROR_NOTIFICATION, error);
+    }
   }
 }
